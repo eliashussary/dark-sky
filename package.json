@@ -1,6 +1,6 @@
 {
   "name": "forecast-io",
-  "version": "1.0.1",
+  "version": "1.0.2",
   "description": "A dead simple forecast.io API wrapper for Nodejs using method chaining and promises.",
   "main": "forecast-io.js",
   "scripts": {
@@ -13,6 +13,7 @@
   "license": "MIT",
   "dependencies": {
     "moment": "^2.13.0",
+    "query-string": "^4.2.2",
     "request": "^2.72.0"
   }
 }

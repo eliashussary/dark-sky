@@ -10,22 +10,28 @@ A dead simple forecast.io API wrapper for Nodejs using method chaining and promi
 npm install forecast-io --save
 ```
 
+### API Documentation
+[Please refer to the forecast.io developer website.](https://developer.forecast.io/docs/v2)
+
 ### Script Example
 ```Javascript
 'use strict';
-const ForecastIO = require('forecast-io');
-
-const forecast = new ForecastIO('<<Your API Key>>')
+const ForecastIO = require('forecast-io')
+const forecast = new ForecastIO('<< Your API Key >>')
 
 forecast
-    .latitude('37.8267')        // required: string
-    .longitude('-122.423')      // required: string
-    .time('1991-06-02')         // optional: date formatted as 'YYYY-MM-DD'
-    .get()                      // run your get request
-    .then(res => {              
+    .latitude('37.8267')            \\ required: latitude, string.
+    .longitude('-122.423')          \\ required: longitude, string.
+    .time('2016-01-28')             \\ optional: date, string 'YYYY-MM-DD'.
+    .units('ca')                    \\ optional: units, string, refer to API documentation.
+    .language('en')                 \\ optional: language, string, refer to API documentation.
+    .exclude('minutely,daily')      \\ optional: exclude, string, refer to API documentation.
+    .extendHourly(true)             \\ optional: extend, boolean, refer to API documentation.
+    .get()                          \\ execute your get request.
+    .then(res => {                  \\ handle your success response.
         console.log(res)
     })
-    .catch(err => {
+    .catch(err => {                 \\ handle your error response.
         console.log(err)
     })
 ```
