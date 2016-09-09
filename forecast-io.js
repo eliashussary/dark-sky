@@ -28,7 +28,7 @@ class ForecastIO {
         if (!time) {
             return this;
         } else {
-            this.t = moment(time).format('YYYY-MM-DDThh:mm:ss');
+            this.t = moment(time).format('YYYY-MM-DDTHH:mm:ss');
             return this;
         }
     }
