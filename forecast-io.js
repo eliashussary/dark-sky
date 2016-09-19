@@ -42,7 +42,7 @@ class ForecastIO {
         !lang ? null : this.query.lang = lang;
         return this;
     }
-    
+
     exclude(blocks){
         !blocks ? null : this.query.exclude = blocks;
         return this;
@@ -50,7 +50,7 @@ class ForecastIO {
 
     extendHourly(param){
         param ? this.query.extend = 'hourly' : null;
-        return this ;      
+        return this ;
     }
 
     generateReqUrl() {
@@ -59,10 +59,14 @@ class ForecastIO {
         this.query ? this.url += `?${queryString.stringify(this.query)}` : this.url;
     }
 
-    get() {
-        return new Promise((resolve, reject) => {
+	get() {
+		return new Promise((resolve, reject) => {
             this.generateReqUrl();
-            req(this.url, (err, res, body) => {
+			let options = {
+				url: this.url,
+				json: true
+			};
+			req(options, (err, res, body) => {
                 if(res.statusCode !== 200 || err){
                     reject(`Script Error: ${err} \nAPI Response: ${res.statusCode} :: ${res.statusMessage}`)
                 }
