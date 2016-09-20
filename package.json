@@ -1,8 +1,8 @@
 {
-  "name": "forecast-io",
-  "version": "1.0.4",
-  "description": "A dead simple forecast.io API wrapper for Nodejs using method chaining and promises.",
-  "main": "forecast-io.js",
+  "name": "dark-sky",
+  "version": "1.0.7",
+  "description": "A dead simple Dark Sky API wrapper for Nodejs using method chaining and promises.",
+  "main": "dark-sky-api.js",
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1"
   },

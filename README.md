@@ -1,23 +1,23 @@
-# forecast-io
+# Dark Sky
 
 
 ### About
-A dead simple forecast.io API wrapper for Nodejs using method chaining and promises.
+A dead simple Dark Sky API wrapper for Nodejs using method chaining and promises.
 
-### Install forecast-io
+### Install Dark Sky
 
 ```Javascript
-npm install forecast-io --save
+npm install dark-sky --save
 ```
 
 ### API Documentation
-[Please refer to the forecast.io developer website.](https://developer.forecast.io/docs/v2)
+[Please refer to the Dark Sky developer website.](https://darksky.net/dev/docs)
 
 ### Script Example
 ```Javascript
 'use strict';
-const ForecastIO = require('forecast-io')
-const forecast = new ForecastIO('<< Your API Key >>')
+const DarkSky = require('dark-sky')
+const forecast = new DarkSky('<< Your API Key >>')
 
 forecast
     .latitude('37.8267')            \\ required: latitude, string.

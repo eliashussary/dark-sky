@@ -3,7 +3,7 @@ const req = require('request');
 const moment = require('moment');
 const queryString = require('query-string');
 
-class ForecastIO {
+class DarkSky {
     constructor(apiKey) {
         this.apiKey = apiKey;
         this.long = null;
@@ -38,36 +38,36 @@ class ForecastIO {
         return this;
     }
 
-    language(lang){
+    language(lang) {
         !lang ? null : this.query.lang = lang;
         return this;
     }
 
-    exclude(blocks){
+    exclude(blocks) {
         !blocks ? null : this.query.exclude = blocks;
         return this;
     }
 
-    extendHourly(param){
+    extendHourly(param) {
         param ? this.query.extend = 'hourly' : null;
-        return this ;
+        return this;
     }
 
     generateReqUrl() {
-        this.url = `https://api.forecast.io/forecast/${this.apiKey}/${this.lat},${this.long}`;
+        this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}`;
         this.t ? this.url += `,${this.t}` : this.url;
         this.query ? this.url += `?${queryString.stringify(this.query)}` : this.url;
     }
 
-	get() {
-		return new Promise((resolve, reject) => {
+    get() {
+        return new Promise((resolve, reject) => {
             this.generateReqUrl();
-			let options = {
-				url: this.url,
-				json: true
-			};
-			req(options, (err, res, body) => {
-                if(res.statusCode !== 200 || err){
+            let options = {
+                url: this.url,
+                json: true
+            };
+            req(options, (err, res, body) => {
+                if (res.statusCode !== 200 || err) {
                     reject(`Script Error: ${err} \nAPI Response: ${res.statusCode} :: ${res.statusMessage}`)
                 }
                 resolve(body)
@@ -76,4 +76,4 @@ class ForecastIO {
     }
 }
 
-module.exports = ForecastIO
+module.exports = DarkSky
