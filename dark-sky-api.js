@@ -67,7 +67,9 @@ class DarkSky {
                 json: true
             };
             req(options, (err, res, body) => {
-                if (res.statusCode !== 200 || err) {
+                if (typeof res == 'undefined') {
+                    reject('Unable to fetch forecast data.')
+                } else if (res.statusCode !== 200 || err) {
                     reject(`Script Error: ${err} \nAPI Response: ${res.statusCode} :: ${res.statusMessage}`)
                 }
                 resolve(body)
