@@ -1,6 +1,6 @@
 {
   "name": "dark-sky",
-  "version": "1.0.7",
+  "version": "1.0.8",
   "description": "A dead simple Dark Sky API wrapper for Nodejs using method chaining and promises.",
   "main": "dark-sky-api.js",
   "scripts": {

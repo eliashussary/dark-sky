@@ -13,24 +13,18 @@ class DarkSky {
     }
 
     longitude(long) {
-        !long ? Error('long value not provided.') : long;
-        this.long = long;
+        !long ? null : this.long = long;
         return this;
     }
 
     latitude(lat) {
-        !lat ? Error('lat value not provided.') : lat;
-        this.lat = lat;
+        !lat ? null : this.lat = lat;
         return this;
     }
 
     time(time) {
-        if (!time) {
-            return this;
-        } else {
-            this.t = moment(time).format('YYYY-MM-DDTHH:mm:ss');
-            return this;
-        }
+        !time ? null : this.t = moment(time).format('YYYY-MM-DDTHH:mm:ss');
+        return this;
     }
 
     units(unit) {
@@ -49,11 +43,12 @@ class DarkSky {
     }
 
     extendHourly(param) {
-        param ? this.query.extend = 'hourly' : null;
+        !param ? null : this.query.extend = 'hourly';
         return this;
     }
 
     generateReqUrl() {
+        if(!this.lat || !this.long) throw "Request not sent. ERROR: Longitute or Latitude is missing."
         this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}`;
         this.t ? this.url += `,${this.t}` : this.url;
         this.query ? this.url += `?${queryString.stringify(this.query)}` : this.url;
@@ -62,14 +57,9 @@ class DarkSky {
     get() {
         return new Promise((resolve, reject) => {
             this.generateReqUrl();
-            let options = {
-                url: this.url,
-                json: true
-            };
-            req(options, (err, res, body) => {
-                if (res.statusCode !== 200 || err) {
-                    reject(`Script Error: ${err} \nAPI Response: ${res.statusCode} :: ${res.statusMessage}`)
-                }
+            req({ url: this.url, json: true }, (err, res, body) => {
+                err ? reject(`Forecast cannot be retrieved. ERROR: ${err}`) : null;
+                res.statusCode !== 200 ? reject(`Forecast cannot be retrieved. Response: ${res.statusCode} ${res.statusMessage}`) : null;
                 resolve(body)
             })
         })
