@@ -48,7 +48,6 @@ class DarkSky {
     }
 
     generateReqUrl() {
-        if(!this.lat || !this.long) throw "Request not sent. ERROR: Longitute or Latitude is missing."
         this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}`;
         this.t ? this.url += `,${this.t}` : this.url;
         this.query ? this.url += `?${queryString.stringify(this.query)}` : this.url;
@@ -56,6 +55,7 @@ class DarkSky {
 
     get() {
         return new Promise((resolve, reject) => {
+            if(!this.lat || !this.long) reject("Request not sent. ERROR: Longitute or Latitude is missing.")
             this.generateReqUrl();
             req({ url: this.url, json: true }, (err, res, body) => {
                 err ? reject(`Forecast cannot be retrieved. ERROR: ${err}`) : null;
