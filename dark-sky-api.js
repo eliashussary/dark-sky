@@ -58,7 +58,10 @@ class DarkSky {
             if(!this.lat || !this.long) reject("Request not sent. ERROR: Longitute or Latitude is missing.")
             this.generateReqUrl();
             req({ url: this.url, json: true }, (err, res, body) => {
-                err ? reject(`Forecast cannot be retrieved. ERROR: ${err}`) : null;
+                if (err) {
+                    reject(`Forecast cannot be retrieved. ERROR: ${err}`)
+                    return
+                }
                 res.statusCode !== 200 ? reject(`Forecast cannot be retrieved. Response: ${res.statusCode} ${res.statusMessage}`) : null;
                 resolve(body)
             })
