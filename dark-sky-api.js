@@ -57,7 +57,7 @@ class DarkSky {
 
     get() {
         return new Promise((resolve, reject) => {
-            if( !truthyOrZero(this.lat) || !truthyOrZero(this.long) ) reject("Request not sent. ERROR: Longitute or Latitude is missing.")
+            if( !truthyOrZero(this.lat) || !truthyOrZero(this.long) ) reject("Request not sent. ERROR: Longitude or Latitude is missing.")
             this.generateReqUrl();
             req({ url: this.url, json: true }, (err, res, body) => {
                 if (err) {
