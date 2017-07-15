@@ -3,6 +3,8 @@ const req = require('request');
 const moment = require('moment');
 const queryString = require('query-string');
 
+const truthyOrZero = value => !!value || parseFloat(value) === 0;
+
 class DarkSky {
     constructor(apiKey) {
         this.apiKey = apiKey;
@@ -13,17 +15,17 @@ class DarkSky {
     }
 
     longitude(long) {
-        !long ? null : this.long = long;
+        !truthyOrZero(long) ? null : this.long = long;
         return this;
     }
 
     latitude(lat) {
-        !lat ? null : this.lat = lat;
+        !truthyOrZero(lat) ? null : this.lat = lat;
         return this;
     }
 
     time(time) {
-        !time ? null : this.t = moment(time).format('YYYY-MM-DDTHH:mm:ss');
+        !truthyOrZero(time) ? null : this.t = moment(time).format('YYYY-MM-DDTHH:mm:ss');
         return this;
     }
 
@@ -55,7 +57,7 @@ class DarkSky {
 
     get() {
         return new Promise((resolve, reject) => {
-            if(!this.lat || !this.long) reject("Request not sent. ERROR: Longitute or Latitude is missing.")
+            if( !truthyOrZero(this.lat) || !truthyOrZero(this.long) ) reject("Request not sent. ERROR: Longitute or Latitude is missing.")
             this.generateReqUrl();
             req({ url: this.url, json: true }, (err, res, body) => {
                 if (err) {
