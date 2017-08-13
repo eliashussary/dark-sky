@@ -8,6 +8,7 @@ class DarkSky {
         this.apiKey = apiKey;
         this.long = null;
         this.lat = null;
+        this.latLng = null;
         this.t = null;
         this.query = {}
     }
@@ -19,6 +20,11 @@ class DarkSky {
 
     latitude(lat) {
         !lat ? null : this.lat = lat;
+        return this;
+    }
+    
+    latLng(latLngStr) {
+        !latLngStr ? null : this.latLng = latLngStr;   
         return this;
     }
 
@@ -48,7 +54,8 @@ class DarkSky {
     }
 
     generateReqUrl() {
-        this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${this.long}`;
+        const latLng = this.latLng ? this.latLng : `${this.lat},${this.long}`;
+        this.url = `https://api.darksky.net/forecast/${this.apiKey}/${latLng}`;
         this.t ? this.url += `,${this.t}` : this.url;
         this.query ? this.url += `?${queryString.stringify(this.query)}` : this.url;
     }
