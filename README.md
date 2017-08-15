@@ -13,30 +13,69 @@ npm install dark-sky --save
 ### API Documentation
 [Please refer to the Dark Sky developer website.](https://darksky.net/dev/docs)
 
-### Script Example
+### Usage Examples
 ```Javascript
-'use strict';
 const DarkSky = require('dark-sky')
-const forecast = new DarkSky('<< Your API Key >>')
+const darksky = new DarkSky('<< Your API Key >>')
 
-forecast
-    .latitude('37.8267')            \\ required: latitude, string.
-    .longitude('-122.423')          \\ required: longitude, string.
+
+// Example 1 - Method chaining, as promise.
+darksky
+    .latitude('37.8267')            \\ required: latitude, string || float.
+    .longitude(-122.423)            \\ required: longitude, string || float.
     .time('2016-01-28')             \\ optional: date, string 'YYYY-MM-DD'.
     .units('ca')                    \\ optional: units, string, refer to API documentation.
     .language('en')                 \\ optional: language, string, refer to API documentation.
-    .exclude('minutely,daily')      \\ optional: exclude, string, refer to API documentation.
+    .exclude('minutely,daily')      \\ optional: exclude, string || array, refer to API documentation.
     .extendHourly(true)             \\ optional: extend, boolean, refer to API documentation.
     .get()                          \\ execute your get request.
-    .then(res => {                  \\ handle your success response.
-        console.log(res)
+    .then(console.log)
+    .catch(console.log)             \\ handle your error response.
+
+// Example 2 - Setting coordinates shorthand, as promise.
+darksky
+    .coordinates({lat: 37.8267, lng: -122.423})
+    .units('ca')
+    .language('en')
+    .exclude('minutely,daily')
+    .get()
+    .then(console.log)
+    .catch(console.log)
+
+// Example 3 - Setting options shorthand, as promise.
+darksky
+    .options({
+        latitude: 37.8267,
+        longitude: -122.423,
+        time: '2017-08-10',
+        language: 'en',
+        exclude: ['minutely', 'daily'],
+        extendHourly: true
     })
-    .catch(err => {                 \\ handle your error response.
-        console.log(err)
-    })
+    .get()
+    .then(console.log)
+
+// Example 4 - Modern endpoint example, as async/await.
+
+app.use('/a-week-ago', async (req, res, next) => {
+  try {
+    const { latitude, longitude } = req.body
+    const forecast = await darksky
+      .options({
+        latitude,
+        longitude,
+        time: moment().subtract(1, 'weeks')
+      })
+      .get()
+    res.status(200).json(forecast)
+  } catch (err) {
+    next(err)
+  }
+})
+
 ```
 
-####License
+### License
 MIT License
 Copyright (c) 2016 Elias Hussary
 
