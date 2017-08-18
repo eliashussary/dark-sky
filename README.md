@@ -16,7 +16,7 @@ npm install dark-sky --save
 ### Usage Examples
 ```Javascript
 const DarkSky = require('dark-sky')
-const darksky = new DarkSky('<< Your API Key >>')
+const darksky = new DarkSky(process.env.DARK_SKY) // Your API KEY can be hardcoded, but I recommend setting it as an env variable.
 
 
 // Example 1 - Method chaining, as promise.

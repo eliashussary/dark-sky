@@ -1,10 +1,10 @@
 {
   "name": "dark-sky",
-  "version": "1.1.1",
+  "version": "1.1.2",
   "description": "A dead simple Dark Sky API wrapper for Nodejs using method chaining and promises.",
   "main": "dark-sky-api.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "test": "./node_modules/.bin/jest"
   },
   "author": {
     "name": "Elias Hussary",
@@ -13,11 +13,14 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/eliash91/dark-sky"
+    "url": "https://github.com/eliashussary/dark-sky"
   },
   "dependencies": {
     "moment": "^2.13.0",
     "query-string": "^4.2.2",
     "request": "^2.72.0"
+  },
+  "devDependencies": {
+    "jest": "^20.0.4"
   }
 }
