@@ -26,7 +26,7 @@ class DarkSky {
 
   coordinates({ lat, lng }) {
     this.lat = parseFloat(lat)
-    this.lng = parseFloat(lng)
+    this.long = parseFloat(lng)
     return this
   }
 
