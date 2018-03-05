@@ -33,7 +33,7 @@ class DarkSky {
 
   time(time) {
     !truthyOrZero(time)
-      ? null
+      ? (this.t = null)
       : (this.t = moment(new Date(time)).format('YYYY-MM-DDTHH:mm:ss'))
     return this
   }
