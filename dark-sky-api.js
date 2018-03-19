@@ -12,6 +12,7 @@ class DarkSky {
     this.lat = null
     this.t = null
     this.query = {}
+    this.timeout = 20000
   }
 
   longitude(long) {
@@ -57,6 +58,11 @@ class DarkSky {
     !param ? null : (this.query.extend = 'hourly')
     return this
   }
+  
+  timeout(milliseconds) {
+    !milliseconds ? null : (this.timeout = milliseconds)
+    return this
+  }
 
   options(options) {
     // get methods of "this" to invoke later
@@ -94,7 +100,7 @@ class DarkSky {
         reject('Request not sent. ERROR: Longitute or Latitude is missing.')
       this._generateReqUrl()
 
-      req({ url: this.url, json: true }, (err, res, body) => {
+      req({ url: this.url, json: true, timeout: this.timeout }, (err, res, body) => {
         if (err) {
           reject(`Forecast cannot be retrieved. ERROR: ${err}`)
           return
