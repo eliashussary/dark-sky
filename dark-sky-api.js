@@ -59,8 +59,8 @@ class DarkSky {
     return this
   }
   
-  timeout(miliseconds) {
-    !miliseconds ? null : (this.timeout = miliseconds)
+  timeout(milliseconds) {
+    !milliseconds ? null : (this.timeout = milliseconds)
     return this
   }
 
