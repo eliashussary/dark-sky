@@ -1,27 +1,32 @@
-'use strict'
-const req = require('request')
-const moment = require('moment')
-const queryString = require('query-string')
-
-const truthyOrZero = value => !!value || parseFloat(value) === 0
+const req = require("request")
+const moment = require("moment")
+const queryString = require("query-string")
 
 class DarkSky {
   constructor(apiKey) {
     this.apiKey = apiKey
     this.long = null
     this.lat = null
-    this.t = null
+    this.timeVal = null
     this.query = {}
-    this.timeout = 20000
+    this.timeoutVal = 20000
+  }
+
+  static truthyOrZero(value) {
+    return !!value || parseFloat(value) === 0
   }
 
   longitude(long) {
-    !truthyOrZero(long) ? null : (this.long = long)
+    if (DarkSky.truthyOrZero(long)) {
+      this.long = long
+    }
     return this
   }
 
   latitude(lat) {
-    !truthyOrZero(lat) ? null : (this.lat = lat)
+    if (DarkSky.truthyOrZero(lat)) {
+      this.lat = lat
+    }
     return this
   }
 
@@ -32,35 +37,57 @@ class DarkSky {
   }
 
   time(time) {
-    !truthyOrZero(time)
-      ? (this.t = null)
-      : (this.t = moment(new Date(time)).format('YYYY-MM-DDTHH:mm:ss'))
+    if (DarkSky.truthyOrZero(time)) {
+      this.timeVal = moment(new Date(time)).format("YYYY-MM-DDTHH:mm:ss")
+    } else {
+      this.timeVal = null
+    }
     return this
   }
 
   units(unit) {
-    !unit ? null : (this.query.units = unit)
+    if (unit) {
+      this.query.unit = unit
+    } else {
+      this.query.unit = null
+    }
     return this
   }
 
   language(lang) {
-    !lang ? null : (this.query.lang = lang)
+    if (lang) {
+      this.query.lang = lang
+    } else {
+      this.query.lang = null
+    }
     return this
   }
 
   exclude(blocks) {
-    blocks = Array.isArray(blocks) ? blocks.join(',') : blocks
-    !blocks ? null : (this.query.exclude = blocks)
+    blocks = Array.isArray(blocks) ? blocks.join(",") : blocks
+    if (blocks) {
+      this.query.exclude = blocks
+    } else {
+      this.query.exclude = null
+    }
     return this
   }
 
   extendHourly(param) {
-    !param ? null : (this.query.extend = 'hourly')
+    if (param) {
+      this.query.extend = "hourly"
+    } else {
+      this.query.extend = null
+    }
     return this
   }
-  
+
   timeout(milliseconds) {
-    !milliseconds ? null : (this.timeout = milliseconds)
+    if (milliseconds) {
+      this.timeoutVal = milliseconds
+    } else {
+      this.timeoutVal = null
+    }
     return this
   }
 
@@ -70,10 +97,11 @@ class DarkSky {
       Object.getPrototypeOf(this)
     ).filter(
       method =>
-        method !== 'constructor' &&
-        method !== 'get' &&
-        method !== 'options' &&
-        method.indexOf('_') === -1
+        method !== "constructor" &&
+        method !== "get" &&
+        method !== "options" &&
+        method !== "truthyOrZero" &&
+        method.indexOf("_") === -1
     )
     // get keys of options object passed
     return Object.keys(options).reduce((acc, val) => {
@@ -86,32 +114,46 @@ class DarkSky {
   }
 
   _generateReqUrl() {
-    this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this
-      .lat},${this.long}`
-    this.t ? (this.url += `,${this.t}`) : this.url
-    this.query
-      ? (this.url += `?${queryString.stringify(this.query)}`)
-      : this.url
+    this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${
+      this.long
+    }`
+    if (this.timeVal) {
+      this.url += `,${this.timeVal}`
+    }
+    if (this.query) {
+      this.url += `?${queryString.stringify(this.query)}`
+    }
+    return true
   }
 
   get() {
     return new Promise((resolve, reject) => {
-      if (!truthyOrZero(this.lat) || !truthyOrZero(this.long))
-        reject('Request not sent. ERROR: Longitute or Latitude is missing.')
+      if (!DarkSky.truthyOrZero(this.lat) || !DarkSky.truthyOrZero(this.long)) {
+        reject("Request not sent. ERROR: Longitute or Latitude is missing.")
+      }
+
       this._generateReqUrl()
 
-      req({ url: this.url, json: true, timeout: this.timeout }, (err, res, body) => {
-        if (err) {
-          reject(`Forecast cannot be retrieved. ERROR: ${err}`)
-          return
-        }
-        res.statusCode !== 200
-          ? reject(
-              `Forecast cannot be retrieved. Response: ${res.statusCode} ${res.statusMessage}`
+      req(
+        { url: this.url, json: true, timeout: this.timeoutVal },
+        (err, res, body) => {
+          if (err) {
+            reject(`Forecast cannot be retrieved. ERROR: ${err}`)
+            return
+          }
+
+          if (res.statusCode !== 200) {
+            reject(
+              `Forecast cannot be retrieved. Response: ${res.statusCode} ${
+                res.statusMessage
+              }`
             )
-          : null
-        resolve(body)
-      })
+            return
+          }
+
+          resolve(body)
+        }
+      )
     })
   }
 }
