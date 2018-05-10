@@ -47,9 +47,9 @@ class DarkSky {
 
   units(unit) {
     if (unit) {
-      this.query.unit = unit
+      this.query.units = unit
     } else {
-      this.query.unit = null
+      this.query.units = null
     }
     return this
   }
