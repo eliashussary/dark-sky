@@ -10,10 +10,18 @@ class DarkSky {
     this.timeVal = null
     this.query = {}
     this.timeoutVal = 20000
+    this.gzip = false
   }
 
   static truthyOrZero(value) {
     return !!value || parseFloat(value) === 0
+  }
+
+  compression(val) {
+    if (DarkSky.truthyOrZero(val)) {
+      this.gzip = val
+    }
+    return this
   }
 
   longitude(long) {
@@ -135,7 +143,7 @@ class DarkSky {
       this._generateReqUrl()
 
       req(
-        { url: this.url, json: true, timeout: this.timeoutVal },
+        { url: this.url, json: true, timeout: this.timeoutVal, gzip: this.gzip },
         (err, res, body) => {
           if (err) {
             reject(`Forecast cannot be retrieved. ERROR: ${err}`)

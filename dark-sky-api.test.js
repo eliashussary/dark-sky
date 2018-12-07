@@ -39,3 +39,16 @@ test("return the current forecast for Toronto using coordinates method and metho
   expect(result.latitude).toBe(43.761539)
   expect(result.longitude).toBe(-79.411079)
 })
+
+test("return the current forecast for Toronto using compression", async () => {
+  const darksky = new DarkSky(process.env.DARK_SKY)
+  const result = await darksky
+    .coordinates({
+      lat: 43.761539,
+      lng: -79.411079
+    })
+    .compression(true)
+    .get()
+  expect(result.latitude).toBe(43.761539)
+  expect(result.longitude).toBe(-79.411079)
+})
