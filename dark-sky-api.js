@@ -149,11 +149,7 @@ class DarkSky {
                     }
 
                     if (res.statusCode !== 200) {
-                        reject(
-                            `Forecast could not be retrieved. Response: ${res.statusCode} ${
-                                res.statusMessage
-                            }`
-                        )
+                        reject(`Forecast could not be retrieved. Response: ${res.statusCode} ${res.statusMessage}`)
                         return
                     }
 
