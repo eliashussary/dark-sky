@@ -122,7 +122,7 @@ class DarkSky {
   }
 
   _generateReqUrl() {
-    this.url = `https://api.darksky.net/forecast/${this.apiKey}/${this.lat},${
+    this.url = `https://api.pirateweather.net/forecast/${this.apiKey}/${this.lat},${
       this.long
     }`
     if (this.timeVal) {
